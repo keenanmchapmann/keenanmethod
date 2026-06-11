@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Leaderboard — Keenan Method</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1B1D; --card:#222426; --bone:#F4EFE6; --text:#EDE7DA;
+    --brass:#C19A5B; --mut:#8c8a84; --line:#2c2e30;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;padding:36px 16px}
+  .wrap{max-width:720px;margin:0 auto}
+  .kicker{text-align:center;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass)}
+  .title{text-align:center;font-family:Italiana,Georgia,serif;font-size:clamp(40px,9vw,64px);
+    line-height:1.02;color:var(--bone);margin:10px 0 4px}
+  .sub{text-align:center;font-style:italic;font-size:14px;color:var(--mut);margin-bottom:28px}
+  .bar{display:grid;grid-template-columns:1fr 1.3fr;gap:14px;margin-bottom:28px}
+  @media(max-width:520px){.bar{grid-template-columns:1fr}}
+  .cell{background:var(--card);border-radius:12px;padding:22px 16px;text-align:center;border:1px solid transparent}
+  .cell.feat{border-color:var(--brass)}
+  .lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
+  .big{font-family:Italiana,Georgia,serif;font-size:34px;line-height:1;color:var(--bone)}
+  .name{font-family:Italiana,Georgia,serif;font-size:30px;line-height:1.1;color:var(--bone)}
+  .foot{font-size:12px;color:var(--brass);margin-top:8px}
+  .foot.mut{color:var(--mut)}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:.5px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .row.one{background:var(--card);border:1px solid var(--brass);border-radius:12px;margin-bottom:8px}
+  .rk{font-family:Italiana,Georgia,serif;font-size:17px;color:var(--mut);width:40px}
+  .row.one .rk{color:var(--brass)}
+  .rn{font-family:Italiana,Georgia,serif;font-size:19px;color:var(--bone);flex:1}
+  .rp{font-family:Italiana,Georgia,serif;font-size:19px;color:var(--brass)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker">Keenan Method</div>
+    <div class="title">The Leaderboard</div>
+    <div class="sub" id="sub">live standings</div>
+
+    <div class="bar">
+      <div class="cell">
+        <div class="lbl" id="cd-lbl">Closes in</div>
+        <div class="big" id="cd-d">—</div>
+        <div class="foot mut" id="cd-sub">— —</div>
+      </div>
+      <div class="cell feat">
+        <div class="lbl">Most points this week</div>
+        <div class="name" id="wk-name">—</div>
+        <div class="foot" id="wk-foot">—</div>
+      </div>
+    </div>
+
+    <div id="board"></div>
+  </div>
+
+<script>
+  var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function pad(n){return n<10?'0'+n:''+n;}
+
+  function tick(){
+    var now=new Date();
+    var end=new Date(now.getFullYear(), now.getMonth()+1, 1, 0,0,0);
+    var d=Math.max(0,end-now);
+    var dd=Math.floor(d/86400000), hh=Math.floor(d/3600000)%24, mm=Math.floor(d/60000)%60, ss=Math.floor(d/1000)%60;
+    document.getElementById('cd-d').textContent=dd+(dd===1?' day':' days');
+    document.getElementById('cd-sub').textContent=pad(hh)+'h '+pad(mm)+'m '+pad(ss)+'s';
+    document.getElementById('cd-lbl').textContent=MONTHS[now.getMonth()]+' closes in';
+    document.getElementById('sub').textContent=MONTHS[now.getMonth()]+' '+now.getFullYear()+' · live standings';
+  }
+
+  function render(players){
+    players.sort(function(a,b){return b.month-a.month;});
+    var board=document.getElementById('board');
+    board.innerHTML='';
+    players.forEach(function(p,i){
+      var row=document.createElement('div');
+      row.className='row'+(i===0?' one':'');
+      var rk=document.createElement('span'); rk.className='rk'; rk.textContent=pad(i+1);
+      var rn=document.createElement('span'); rn.className='rn'; rn.textContent=p.name;
+      var rp=document.createElement('span'); rp.className='rp'; rp.textContent=p.month;
+      row.appendChild(rk); row.appendChild(rn); row.appendChild(rp);
+      board.appendChild(row);
+    });
+    var top=players.slice().sort(function(a,b){return b.week-a.week;})[0];
+    if(top && top.week>0){
+      document.getElementById('wk-name').textContent=top.name;
+      document.getElementById('wk-foot').textContent='+'+top.week+' pts this week';
+    } else {
+      document.getElementById('wk-name').textContent='—';
+      document.getElementById('wk-foot').className='foot mut';
+      document.getElementById('wk-foot').textContent='no points yet this week';
+    }
+  }
+
+  // Shown only if the data can't be reached yet, so the page always looks right.
+  var SAMPLE=[
+    {name:'Brad A.',month:100,week:20},
+    {name:'Cameron J.',month:15,week:45},
+    {name:'David R.',month:15,week:10},
+    {name:'Jake D.',month:10,week:5}
+  ];
+
+  function load(){
+    fetch('/api/leaderboard').then(function(r){return r.json();}).then(function(data){
+      if(data && data.players && data.players.length){ render(data.players); }
+      else { render(SAMPLE); }
+    }).catch(function(){ render(SAMPLE); });
+  }
+
+  tick(); setInterval(tick,1000);
+  load(); setInterval(load,60000);
+</script>
+</body>
+</html>
