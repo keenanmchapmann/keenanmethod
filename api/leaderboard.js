@@ -23,6 +23,7 @@ export default async function handler(req, res) {
       url.searchParams.append('fields[]', 'Display Name');
       url.searchParams.append('fields[]', "This Month's Points");
       url.searchParams.append('fields[]', "This Week's Points");
+      url.searchParams.append('fields[]', 'Total Points');
       url.searchParams.set('pageSize', '100');
       if (offset) url.searchParams.set('offset', offset);
 
@@ -45,6 +46,7 @@ export default async function handler(req, res) {
         name: rec.fields['Display Name'] || '',
         month: rec.fields["This Month's Points"] || 0,
         week: rec.fields["This Week's Points"] || 0,
+        total: rec.fields['Total Points'] || 0,
       }))
       .filter((p) => p.name);
 

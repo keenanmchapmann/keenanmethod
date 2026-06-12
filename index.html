@@ -11,32 +11,64 @@
   :root{
     --bg:#1A1B1D; --card:#222426; --bone:#F4EFE6; --text:#EDE7DA;
     --brass:#C19A5B; --mut:#8c8a84; --line:#2c2e30;
+    --serif:'Italiana',Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;padding:36px 16px}
-  .wrap{max-width:720px;margin:0 auto}
-  .kicker{text-align:center;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass)}
-  .title{text-align:center;font-family:Italiana,Georgia,serif;font-size:clamp(40px,9vw,64px);
-    line-height:1.02;color:var(--bone);margin:10px 0 4px}
-  .sub{text-align:center;font-style:italic;font-size:14px;color:var(--mut);margin-bottom:28px}
-  .bar{display:grid;grid-template-columns:1fr 1.3fr;gap:14px;margin-bottom:28px}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding:40px 16px}
+  .wrap{max-width:680px;margin:0 auto}
+  .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+  .kicker{text-align:center;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--brass)}
+  .title{text-align:center;font-family:var(--serif);font-size:clamp(40px,9vw,64px);
+    line-height:1.02;color:var(--bone);margin:10px 0 5px}
+  .sub{text-align:center;font-style:italic;font-size:14px;color:var(--mut);margin-bottom:30px}
+
+  .bar{display:grid;grid-template-columns:1fr 1.25fr;gap:14px;margin-bottom:34px}
   @media(max-width:520px){.bar{grid-template-columns:1fr}}
-  .cell{background:var(--card);border-radius:12px;padding:22px 16px;text-align:center;border:1px solid transparent}
+  .cell{background:var(--card);border-radius:14px;padding:22px 16px;text-align:center;border:1px solid transparent}
   .cell.feat{border-color:var(--brass)}
   .lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
-  .big{font-family:Italiana,Georgia,serif;font-size:34px;line-height:1;color:var(--bone)}
-  .name{font-family:Italiana,Georgia,serif;font-size:30px;line-height:1.1;color:var(--bone)}
-  .foot{font-size:12px;color:var(--brass);margin-top:8px}
-  .foot.mut{color:var(--mut)}
-  .row{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:.5px solid var(--line)}
+  .big{font-family:var(--serif);font-size:36px;line-height:1;color:var(--bone)}
+  .cell .name{font-size:24px;font-weight:600;line-height:1.15;color:var(--bone);letter-spacing:-.01em}
+  .foot{font-size:12px;font-weight:600;color:var(--brass);margin-top:8px;letter-spacing:.02em}
+  .foot.mut{color:var(--mut);font-weight:500}
+
+  .zone-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin:0 0 14px 2px}
+
+  /* Podium — top 3 */
+  .podium{display:grid;grid-template-columns:1fr 1.16fr 1fr;gap:12px;align-items:end;margin-bottom:30px}
+  .pod{background:var(--card);border-radius:14px;padding:22px 14px;text-align:center;border:1px solid transparent}
+  .pod.first{border-color:var(--brass);padding-top:32px;padding-bottom:32px}
+  .pod .pr{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+  .pod.first .pr{color:var(--brass)}
+  .pod .pn{font-size:clamp(18px,4.2vw,23px);font-weight:600;color:var(--bone);margin:8px 0 4px;letter-spacing:-.01em}
+  .pod .pp{font-size:15px;font-weight:600;color:var(--brass)}
+  @media(max-width:520px){.podium{display:flex;flex-direction:column}.pod.first{order:-1}}
+
+  /* The board — 4 to 20 */
+  .row{display:flex;align-items:center;justify-content:space-between;padding:17px 18px;border-bottom:1px solid var(--line)}
   .row:last-child{border-bottom:none}
-  .row.one{background:var(--card);border:1px solid var(--brass);border-radius:12px;margin-bottom:8px}
-  .rk{font-family:Italiana,Georgia,serif;font-size:17px;color:var(--mut);width:40px}
-  .row.one .rk{color:var(--brass)}
-  .rn{font-family:Italiana,Georgia,serif;font-size:19px;color:var(--bone);flex:1}
-  .rp{font-family:Italiana,Georgia,serif;font-size:19px;color:var(--brass)}
+  .rk{font-size:14px;font-weight:500;color:var(--mut);width:38px}
+  .rn{font-size:17px;font-weight:500;color:var(--bone);flex:1;letter-spacing:-.01em}
+  .rp{font-size:18px;font-weight:600;color:var(--brass)}
+
+  /* Cut line — #21 */
+  .cut{display:none;justify-content:space-between;align-items:center;padding:17px 18px;margin-top:8px;
+    border-top:1px dashed var(--line)}
+  .cut .cn{font-size:15px;font-weight:500;color:var(--mut)}
+  .cut .cg{font-size:12px;font-weight:600;color:var(--brass)}
+
+  /* How points work */
+  .rules{background:var(--card);border-radius:14px;padding:26px 24px;margin-top:34px}
+  .rules h3{font-family:var(--serif);font-size:26px;font-weight:400;color:var(--bone);margin:0 0 6px}
+  .rules .intro{font-size:13px;color:var(--mut);margin:0 0 20px;line-height:1.5}
+  .pt{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+  .pt:last-of-type{border-bottom:none}
+  .pt .a{font-size:14px;font-weight:500;color:var(--text)}
+  .pt .v{font-size:14px;font-weight:600;color:var(--brass)}
+  .rules .end{font-size:12px;color:var(--mut);margin:18px 0 0;line-height:1.5;border-top:1px solid var(--line);padding-top:16px}
 </style>
 </head>
 <body>
@@ -48,17 +80,27 @@
     <div class="bar">
       <div class="cell">
         <div class="lbl" id="cd-lbl">Closes in</div>
-        <div class="big" id="cd-d">—</div>
-        <div class="foot mut" id="cd-sub">— —</div>
+        <div class="big num" id="cd-d">—</div>
+        <div class="foot mut num" id="cd-sub">— —</div>
       </div>
       <div class="cell feat">
         <div class="lbl">Most points this week</div>
         <div class="name" id="wk-name">—</div>
-        <div class="foot" id="wk-foot">—</div>
+        <div class="foot num" id="wk-foot">—</div>
       </div>
     </div>
 
+    <div class="zone-lbl">Podium</div>
+    <div class="podium" id="podium"></div>
+
+    <div class="zone-lbl">The Top 20</div>
     <div id="board"></div>
+    <div class="cut" id="cut"><span class="cn"></span><span class="cg num"></span></div>
+
+    <!-- HOW POINTS WORK -->
+    <a href="how-it-works.html" style="display:block;text-align:center;margin-top:32px;padding:18px;
+       background:var(--card);border-radius:14px;color:var(--brass);text-decoration:none;
+       font-size:14px;font-weight:600;letter-spacing:.03em">How points work &amp; what you win →</a>
   </div>
 
 <script>
@@ -77,35 +119,62 @@
   }
 
   function render(players){
-    players.sort(function(a,b){return b.month-a.month;});
-    var board=document.getElementById('board');
-    board.innerHTML='';
-    players.forEach(function(p,i){
-      var row=document.createElement('div');
-      row.className='row'+(i===0?' one':'');
-      var rk=document.createElement('span'); rk.className='rk'; rk.textContent=pad(i+1);
+    players.sort(function(a,b){ return (b.month-a.month) || ((b.total||0)-(a.total||0)); });
+
+    var pod=document.getElementById('podium'); pod.innerHTML='';
+    [1,0,2].forEach(function(idx){
+      var p=players[idx]; if(!p) return;
+      var rank=idx+1;
+      var el=document.createElement('div'); el.className='pod'+(rank===1?' first':'');
+      var pr=document.createElement('div'); pr.className='pr'; pr.textContent=(rank===1?'1st':rank===2?'2nd':'3rd');
+      var pn=document.createElement('div'); pn.className='pn'; pn.textContent=p.name;
+      var pp=document.createElement('div'); pp.className='pp num'; pp.textContent=p.month+' pts';
+      el.appendChild(pr); el.appendChild(pn); el.appendChild(pp);
+      pod.appendChild(el);
+    });
+
+    var board=document.getElementById('board'); board.innerHTML='';
+    players.slice(3,20).forEach(function(p,i){
+      var row=document.createElement('div'); row.className='row';
+      var rk=document.createElement('span'); rk.className='rk num'; rk.textContent=pad(i+4);
       var rn=document.createElement('span'); rn.className='rn'; rn.textContent=p.name;
-      var rp=document.createElement('span'); rp.className='rp'; rp.textContent=p.month;
+      var rp=document.createElement('span'); rp.className='rp num'; rp.textContent=p.month;
       row.appendChild(rk); row.appendChild(rn); row.appendChild(rp);
       board.appendChild(row);
     });
+
+    var cut=document.getElementById('cut');
+    if(players.length>20){
+      var p21=players[20];
+      var gap=Math.max(0,(players[19].month||0)-(p21.month||0));
+      cut.style.display='flex';
+      cut.querySelector('.cn').textContent='21 · '+p21.name;
+      cut.querySelector('.cg').textContent=gap+' pts off the board';
+    } else { cut.style.display='none'; }
+
+    var foot=document.getElementById('wk-foot');
     var top=players.slice().sort(function(a,b){return b.week-a.week;})[0];
     if(top && top.week>0){
       document.getElementById('wk-name').textContent=top.name;
-      document.getElementById('wk-foot').textContent='+'+top.week+' pts this week';
+      foot.className='foot num'; foot.textContent='+'+top.week+' pts this week';
     } else {
       document.getElementById('wk-name').textContent='—';
-      document.getElementById('wk-foot').className='foot mut';
-      document.getElementById('wk-foot').textContent='no points yet this week';
+      foot.className='foot mut num'; foot.textContent='no points yet this week';
     }
   }
 
-  // Shown only if the data can't be reached yet, so the page always looks right.
   var SAMPLE=[
-    {name:'Brad A.',month:100,week:20},
-    {name:'Cameron J.',month:15,week:45},
-    {name:'David R.',month:15,week:10},
-    {name:'Jake D.',month:10,week:5}
+    {name:'Brad A.',month:100,week:20},{name:'Cameron J.',month:92,week:45},
+    {name:'David R.',month:88,week:18},{name:'Jake D.',month:81,week:12},
+    {name:'Owen K.',month:77,week:30},{name:'Liam P.',month:74,week:9},
+    {name:'Noah S.',month:70,week:22},{name:'Ethan M.',month:66,week:5},
+    {name:'Lucas B.',month:63,week:14},{name:'Mason T.',month:59,week:8},
+    {name:'Riley Y.',month:55,week:40},{name:'Thomas H.',month:52,week:6},
+    {name:'Caleb W.',month:48,week:11},{name:'Harry N.',month:45,week:3},
+    {name:'Jack J.',month:42,week:19},{name:'Luke D.',month:39,week:7},
+    {name:'Aston K.',month:35,week:2},{name:'Cedric C.',month:31,week:13},
+    {name:'Zack T.',month:28,week:4},{name:'Amy P.',month:25,week:16},
+    {name:'Jordan M.',month:18,week:6},{name:'Mark N.',month:14,week:1}
   ];
 
   function load(){
